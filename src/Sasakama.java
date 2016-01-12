@@ -40,14 +40,14 @@ import java.util.ArrayList;
 import org.Sasakama.*;
 
 public class Sasakama {
-	final static String progname = "sasakama";
+	final static String progname = "Sasakama";
 	final static String version  = "version: 20151228";
 	
 	public static void usage()	{
 	   System.err.printf("%s - The HMM-based speech synthesis engine %s \n", progname, version);
 	   System.err.printf("\n");
 	   System.err.printf("  usage:\n");
-	   System.err.printf("    hts_engine [ options ] [ infile ]\n");
+	   System.err.printf("    %s [ options ] [ infile ]\n", progname);
 	   System.err.printf("  options:                                                                   [  def][ min-- max]\n");
 	   System.err.printf("    -m  htsvoice   : HTS voice files                                         [  N/A]\n");
 	   System.err.printf("    -od s          : filename of output label with duration                  [  N/A]\n");
