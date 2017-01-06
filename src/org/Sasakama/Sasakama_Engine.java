@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -552,9 +553,32 @@ public class Sasakama_Engine {
 		}
 	}
 	
+	public String[] get_label(){
+		ArrayList<String> array = new ArrayList<String>();
+		
+		int nstate = ms.get_nstate();
+		double rate = condition.fperiod * Sasakama_Constant.TIME_CONSTANT / condition.sampling_frequency;
+		
+		for(int i=0, state = 0, frame = 0; i < label.get_size();i++){
+			int duration = 0;
+			for(int j=0;j < nstate;j++)
+				duration += sss.get_duration(state++);
+			String str = String.format("%d %d %s", (int)(frame*rate), (int)((frame+duration)*rate), label.get_string(i));
+			array.add(str);
+			frame += duration;
+		}
+		
+		String[] retStr = new String[array.size()];
+		for(int i=0;i < retStr.length;i++)
+			retStr[i] = array.get(i);
+		
+		//String[] retStr = (String[])array.toArray();
+		return retStr;
+	}
+	
 	public void save_label(FileOutputStream fos){
 		PrintStream ps = new PrintStream(fos, true);
-		
+		/*
 		int nstate = ms.get_nstate();
 		double rate = condition.fperiod * Sasakama_Constant.TIME_CONSTANT / condition.sampling_frequency;
 		
@@ -565,6 +589,12 @@ public class Sasakama_Engine {
 			ps.printf("%d %d %s\n", (int)(frame*rate), (int)((frame+duration)*rate), label.get_string(i));
 			frame += duration;
 		}
+		*/
+		String[] label = get_label();
+		for(int i=0;i <label.length;i++)
+			ps.printf("%s\n", label[i]);
+
+		ps.close();
 	}
 	
 	public void save_generated_parameter(int stream_index, FileOutputStream fos){
